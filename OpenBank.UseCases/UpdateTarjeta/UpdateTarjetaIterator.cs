@@ -23,7 +23,7 @@ namespace OpenBank.UseCases.CreateTargeta
         //    OutputPort = outputPort;
         //}
 
-        public async Task HandleBloquearTarjeta(int numeroTarjeta)
+        public async Task HandleBloquearTarjeta(decimal numeroTarjeta)
         {
             Repository.UpdateBloquearTarjeta(numeroTarjeta);
             await UnitOfWork.SaveChanges();

@@ -6,9 +6,9 @@ namespace OpenBank.Entities.Interfaces
     {
         Task CreateTargeta();
         //Tarjeta GetById(int id);
-        Tarjeta? GetByNumeroTarjeta(int numeroTarjeta);
+        Tarjeta? GetByNumeroTarjeta(decimal numeroTarjeta);
         Tarjeta? GetNumeroPin(int pin);
-        void UpdateBloquearTarjeta(int numeroTarjeta);
+        void UpdateBloquearTarjeta(decimal numeroTarjeta);
 
     }
 }

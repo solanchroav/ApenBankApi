@@ -4,7 +4,7 @@ namespace OpenBank.UseCasesAbstractions
 {
     public interface IGetTargetaInputPort
     {
-        Task HandleNumeroTarjeta(int targeta);
+        Task HandleNumeroTarjeta(decimal targeta);
         Task HandleNumeroPin(int targeta);
     }
 }

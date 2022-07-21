@@ -16,7 +16,7 @@ namespace OpenBank.RepositoryEF.Repositories
             throw new NotImplementedException();
         }
 
-        public Tarjeta? GetByNumeroTarjeta(int numeroTarjeta)
+        public Tarjeta? GetByNumeroTarjeta(decimal numeroTarjeta)
         {
             var tarjeta = OpenBankContext.Tarjetas.Where(t => t.NumeroTarjeta == numeroTarjeta).FirstOrDefault();
             return tarjeta;
@@ -28,7 +28,7 @@ namespace OpenBank.RepositoryEF.Repositories
             return tarjeta;
         }
 
-        public void UpdateBloquearTarjeta(int numeroTarjeta)
+        public void UpdateBloquearTarjeta(decimal numeroTarjeta)
         {
             var tarjeta = OpenBankContext.Tarjetas.Where(t => t.NumeroTarjeta == numeroTarjeta).FirstOrDefault();
 

@@ -33,7 +33,7 @@ namespace OpenBank.UseCases.GetTargeta
             return Task.CompletedTask;
         }
 
-        public Task HandleNumeroTarjeta(int targeta)
+        public Task HandleNumeroTarjeta(decimal targeta)
         {
             var newTarjeta = Repository.GetByNumeroTarjeta(targeta);
 
