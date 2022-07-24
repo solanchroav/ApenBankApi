@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using OpenBank.DTOs;
 using OpenBank.Presenters;
 using OpenBank.UseCasesAbstractions;
@@ -7,7 +8,7 @@ namespace OpenBank.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GetTargetaController
+    public class GetTargetaController : ControllerBase
     {
         readonly IGetTargetaInputPort InputPort;
         readonly IGetTargetaOutputPort OutputPort;
@@ -15,17 +16,49 @@ namespace OpenBank.Controllers
         public GetTargetaController(IGetTargetaInputPort inputPort, IGetTargetaOutputPort outputPort) => (InputPort, OutputPort) = (inputPort, outputPort);
 
         [HttpGet("pin/{pin}")]
-        public async Task<TargetaDTO> GetPinTarjeta (int pin)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetPinTarjeta (int pin)
         {
-            await InputPort.HandleNumeroPin(pin);
-            return ((IPresenter<TargetaDTO>)OutputPort).Content;
+            try
+            {
+               
+                var result = await InputPort.HandleNumeroPin(pin);
+               
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(((IPresenter<TargetaDTO>)OutputPort).Content);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         [HttpGet("numeroTarjeta/{numeroTarjeta}")]
-        public async Task<TargetaDTO> GetNumeroTarjeta(decimal numeroTarjeta)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetNumeroTarjeta(decimal numeroTarjeta)
         {
-            await InputPort.HandleNumeroTarjeta(numeroTarjeta);
-            return ((IPresenter<TargetaDTO>)OutputPort).Content;
+            try
+            {
+                
+                var result = await InputPort.HandleNumeroTarjeta(numeroTarjeta);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(((IPresenter<TargetaDTO>)OutputPort).Content);
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception(e.Message);
+            }
         }
     }
 }

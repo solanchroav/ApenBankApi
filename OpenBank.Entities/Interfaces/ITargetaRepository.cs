@@ -8,7 +8,7 @@ namespace OpenBank.Entities.Interfaces
         //Tarjeta GetById(int id);
         Tarjeta? GetByNumeroTarjeta(decimal numeroTarjeta);
         Tarjeta? GetNumeroPin(int pin);
-        void UpdateBloquearTarjeta(decimal numeroTarjeta);
+        bool UpdateBloquearTarjeta(decimal numeroTarjeta);
 
     }
 }

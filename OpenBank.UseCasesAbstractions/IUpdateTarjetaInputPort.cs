@@ -4,6 +4,6 @@ namespace OpenBank.UseCasesAbstractions
 {
     public interface IUpdateTarjetaInputPort
     {
-        Task HandleBloquearTarjeta(decimal numeroTargeta);
+        Task<bool> HandleBloquearTarjeta(decimal numeroTargeta);
     }
 }

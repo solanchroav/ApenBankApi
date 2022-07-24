@@ -28,7 +28,7 @@ namespace OpenBank.RepositoryEF.Repositories
             return tarjeta;
         }
 
-        public void UpdateBloquearTarjeta(decimal numeroTarjeta)
+        public bool UpdateBloquearTarjeta(decimal numeroTarjeta)
         {
             var tarjeta = OpenBankContext.Tarjetas.Where(t => t.NumeroTarjeta == numeroTarjeta).FirstOrDefault();
 
@@ -36,7 +36,12 @@ namespace OpenBank.RepositoryEF.Repositories
             {
                 tarjeta.Bloqueada = true;
                 OpenBankContext.Tarjetas.Update(tarjeta);
+                return true;
+            } else
+            {
+                return false;
             }
+
         }
     }
 }

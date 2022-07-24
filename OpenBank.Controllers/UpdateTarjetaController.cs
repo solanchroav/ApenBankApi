@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using OpenBank.Presenters;
 using OpenBank.UseCasesAbstractions;
 using System;
@@ -11,7 +12,7 @@ namespace OpenBank.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UpdateTarjetaController
+    public class UpdateTarjetaController : ControllerBase
     {
         readonly IUpdateTarjetaInputPort InputPort;
         readonly IUpdateTarjetaOutputPort OutputPort;
@@ -19,10 +20,26 @@ namespace OpenBank.Controllers
         public UpdateTarjetaController(IUpdateTarjetaInputPort inputPort, IUpdateTarjetaOutputPort outputPort) => (InputPort, OutputPort) = (inputPort, outputPort);
 
         [HttpPut]
-        public async Task<decimal> GetPinTarjeta(decimal numeroTarjeta)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateBloquearTarjeta(decimal numeroTarjeta)
         {
-            await InputPort.HandleBloquearTarjeta(numeroTarjeta);
-            return ((IPresenter<decimal>)OutputPort).Content;
+            try
+            {
+                bool response = await InputPort.HandleBloquearTarjeta(numeroTarjeta);
+
+                if (!response)
+                {
+                    return NotFound();
+                }
+                return Ok(((IPresenter<decimal>)OutputPort).Content);
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception(e.Message);
+            }
         }
     }
 }

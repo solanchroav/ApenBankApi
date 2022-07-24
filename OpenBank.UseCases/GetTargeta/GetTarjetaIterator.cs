@@ -16,38 +16,47 @@ namespace OpenBank.UseCases.GetTargeta
 
         public GetTarjetaIterator(ITargetaRepository repository, IUnitOfWork unitOfWork, IGetTargetaOutputPort outputPort) => (Repository, OutputPort) = (repository, outputPort);
 
-        public Task HandleNumeroPin(int targeta)
+        public async Task<TargetaDTO?> HandleNumeroPin(int targeta)
         {
             var newTarjeta = Repository.GetNumeroPin(targeta);
+            TargetaDTO newTarjetaDTO = null;
 
-            TargetaDTO newTarjetaDTO = new TargetaDTO
+            if (newTarjeta != null)
             {
-                NumeroTarjeta = newTarjeta.NumeroTarjeta,
-                Bloqueada = newTarjeta.Bloqueada,
-                FechaNacimiento = newTarjeta.FechaNacimiento.ToString(),
-                Pin = newTarjeta.Pin,
-                BalanceTotal = newTarjeta.BalanceTotal
-            };  
+                newTarjetaDTO = new TargetaDTO
+                {
+                    NumeroTarjeta = newTarjeta.NumeroTarjeta,
+                    Bloqueada = newTarjeta.Bloqueada,
+                    FechaNacimiento = newTarjeta.FechaNacimiento.ToString(),
+                    Pin = newTarjeta.Pin,
+                    BalanceTotal = newTarjeta.BalanceTotal
+                };
 
-            OutputPort.HandleNumeroPin(newTarjetaDTO);
-            return Task.CompletedTask;
+                await OutputPort.HandleNumeroPin(newTarjetaDTO);
+            }
+
+            return newTarjetaDTO;
         }
 
-        public Task HandleNumeroTarjeta(decimal targeta)
+        public async Task<TargetaDTO?> HandleNumeroTarjeta(decimal targeta)
         {
             var newTarjeta = Repository.GetByNumeroTarjeta(targeta);
+            TargetaDTO newTarjetaDTO = null;
 
-            TargetaDTO newTarjetaDTO = new TargetaDTO
+            if (newTarjeta != null)
             {
-                NumeroTarjeta = newTarjeta.NumeroTarjeta,
-                Bloqueada = newTarjeta.Bloqueada,
-                FechaNacimiento = newTarjeta.FechaNacimiento.ToString(),
-                Pin = newTarjeta.Pin,
-                BalanceTotal = newTarjeta.BalanceTotal
-            };
+                newTarjetaDTO = new TargetaDTO
+                {
+                    NumeroTarjeta = newTarjeta.NumeroTarjeta,
+                    Bloqueada = newTarjeta.Bloqueada,
+                    FechaNacimiento = newTarjeta.FechaNacimiento.ToString(),
+                    Pin = newTarjeta.Pin,
+                    BalanceTotal = newTarjeta.BalanceTotal
+                };
 
-            OutputPort.HandleNumeroPin(newTarjetaDTO);
-            return Task.CompletedTask;
+                await OutputPort.HandleNumeroPin(newTarjetaDTO);
+            }
+            return newTarjetaDTO;
         }
     }
 }
